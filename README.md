@@ -31,7 +31,7 @@ A modern, intuitive e-book reading platform built with Angular that allows users
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/ebook-dashboard.git
+   git clone https://github.com/harshbisht007/ebook-dashboard.git
    cd ebook-dashboard
    ```
 
