@@ -60,8 +60,8 @@ ng serve --host 0.0.0.0
 
 ## Acknowledgments
 
-- Only Me
-- 
+- Only To Me
+
 ## Additional Resources
 
 - [Angular Documentation](https://angular.dev)
