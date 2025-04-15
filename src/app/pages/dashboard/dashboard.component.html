@@ -15,81 +15,87 @@
     </button>
   </div>
 
+
   <div class="flex flex-wrap items-center gap-3 mb-6 text-gray-600">
     <span>Filter by:</span>
     <button
-      class="px-4 py-2 border border-gray-200 rounded-full bg-gray-100 hover:bg-gray-200 transition"
-      [ngClass]="{ 'bg-blue-500 text-white border-blue-500': activeCategory === 'All' }"
-      (click)="filterByCategory('All')"
-    >
+      class="px-4 py-2 border border-gray-200 rounded-xl transition"
+      [ngClass]="{'text-white bg-blue-600 hover:bg-blue-700': activeCategory === 'All','text-gray-600 bg-gray-200 hover:bg-gray-400': activeCategory !== 'All'}"
+      (click)="filterByCategory('All')">
       All
     </button>
-    <button
-      *ngFor="let category of allCategories"
-      class="px-4 py-2 border border-gray-200 rounded-full bg-gray-100 hover:bg-gray-200 transition"
-      [ngClass]="{ 'bg-blue-500 text-white border-blue-500': activeCategory === category }"
-      (click)="filterByCategory(category)"
-    >
-      {{ category }}
-    </button>
+    @for (category of allCategories; track category) {
+      <button
+        class="px-4 py-2 border border-gray-200 rounded-xl transition"
+        [ngClass]="{ 'text-white bg-blue-600 hover:bg-blue-700': activeCategory === category , 'text-gray-600 bg-gray-200 hover:bg-gray-400': activeCategory !== category }"
+        (click)="filterByCategory(category)"
+      >
+        {{ category }}
+      </button>
+    }
   </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
+    @for (book of books; track book) {
     <div
-      class="bg-white shadow-md rounded-lg overflow-hidden transition hover:-translate-y-1 hover:shadow-lg"
-      *ngFor="let book of books"
+      class="group bg-white shadow-xl rounded-lg overflow-hidden transition relative"
     >
       <div class="h-52 bg-gray-50 flex items-center justify-center">
         <img
-          [src]="book.coverImage || 'assets/images/default-book-cover.jpg'"
+          [src]="book.coverImage"
           [alt]="book.title"
-          class="h-full object-contain"
+          class="h-full object-contain group-hover:scale-x-120 transition-transform duration-300"
         />
       </div>
       <div class="p-5">
         <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ book.title }}</h3>
         <p class="italic text-gray-500 mb-2">By {{ book.author }}</p>
 
-        <div class="p-5">
-          <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ book.title }}</h3>
-          <p class="italic text-gray-500 mb-2">By {{ book.author }}</p>
-
-          <div class="flex items-center gap-3 mb-3">
-    <span class="inline-block bg-yellow-400 text-gray-800 text-xs px-3 py-1 rounded-full">
+        <div class="flex items-center gap-3 mb-3">
+    <span class="absolute top-0 right-0 inline-block bg-yellow-400 text-gray-800 text-xs px-2 py-1">
       {{ book.category }}
     </span>
-            <a [routerLink]="['/read', book.id]"
-               class="px-5 py-2 bg-blue-600 text-white text-sm rounded-full shadow-md hover:bg-blue-700 transition duration-300 transform hover:scale-105">
-              Read
-            </a>
-          </div>
+          <a [routerLink]="['/read', book.id]"
+             class="absolute right-2 bottom-2 px-5 py-2 bg-blue-500 text-white text-sm rounded-md shadow-md hover:bg-blue-700 transition duration-300 transform">
+            Read
+          </a>
         </div>
       </div>
     </div>
+    }
+  </div>
 
-    <div *ngIf="books.length === 0" class="text-center bg-gray-100 p-10 rounded-lg">
+  @if (books.length === 0) {
+    <div class="text-center bg-gray-100 p-10 rounded-lg">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
            class="mx-auto mb-6 max-w-[150px] h-24 text-gray-500">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h16M4 4v16M20 4v16M4 12h16"/>
       </svg>
       <h2 class="text-2xl text-gray-800 mb-2">No books found</h2>
 
-      <p *ngIf="!searchQuery && activeCategory !== 'All'" class="text-gray-500 mb-3">
-        No books found in the "{{ activeCategory }}" category
-      </p>
-      <p *ngIf="!searchQuery && activeCategory === 'All'" class="text-gray-500 mb-5">
-        Start adding books to your collection!
-      </p>
+      @if (!searchQuery && activeCategory !== 'All') {
+        <p class="text-gray-500 mb-3">
+          No books found in the "{{ activeCategory }}" category
+        </p>
+      }
+
+      @if (!searchQuery && activeCategory === 'All') {
+        <p class="text-gray-500 mb-5">
+          Start adding books to your collection!
+        </p>
+      }
+
       <div class="flex justify-center flex-wrap gap-3">
-        <button
-          class="px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-          *ngIf="searchQuery || activeCategory !== 'All'"
-          (click)="searchQuery = ''; activeCategory = 'All'; loadBooks()"
-        >
-          View All Books
-        </button>
+        @if (searchQuery || activeCategory !== 'All') {
+          <button
+            class="px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+            (click)="searchQuery = ''; activeCategory = 'All'; loadBooks()"
+          >
+            View All Books
+          </button>
+        }
       </div>
     </div>
+  }
 
-
-  </div>
+</div>

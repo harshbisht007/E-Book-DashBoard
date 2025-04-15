@@ -34,37 +34,32 @@
     </button>
   </div>
 
-  <!-- Book Content -->
   <div class="bg-white text-gray-700 p-6 rounded-lg shadow-md text-lg leading-relaxed min-h-[250px]">
-    <ng-container *ngIf="book; else loading">
-      <p *ngIf="!isLocked; else lockedContent">
-        {{ book?.content?.[pageIndex] }}
-      </p>
-    </ng-container>
-
-    <!-- Locked Message -->
-    <ng-template #lockedContent>
-      <div class="text-center text-gray-700">
-        <p class="mb-4 text-lg">🔒 This page is part of the premium content.</p>
-        <button
-          class="px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-all"
-          (click)="showBuyModal = true"
-          *ngIf="isPreview"
-        >
-          📘 Buy this book to unlock all {{ book?.content?.length }} pages
-        </button>
-      </div>
-    </ng-template>
-
-    <!-- Loading -->
-    <ng-template #loading>
+    @if (book) {
+      @if (!isLocked) {
+        <p>{{ book?.content?.[pageIndex] }}</p>
+      } @else {
+        <div class="text-center text-gray-700">
+          <p class="mb-4 text-lg">🔒 This page is part of the premium content.</p>
+          @if (isPreview) {
+            <button
+              class="px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-all"
+              (click)="showBuyModal = true"
+            >
+              📘 Buy this book to unlock all {{ book?.content?.length }} pages
+            </button>
+          }
+        </div>
+      }
+    } @else {
       <p>Loading book...</p>
-    </ng-template>
+    }
   </div>
 
-  <!-- Page Number -->
   <div class="mt-4 text-center text-sm text-gray-500">
-    <span *ngIf="book">Page {{ pageIndex + 1 }} / {{ book.content?.length }}</span>
+    @if (book) {
+      <span>Page {{ pageIndex + 1 }} / {{ book.content?.length }}</span>
+    }
   </div>
 
   <p-dialog

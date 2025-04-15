@@ -3,7 +3,6 @@
     <h1 class="mb-6 text-center text-3xl font-extrabold text-gray-800">Create Your Account</h1>
 
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="space-y-6">
-      <!-- Full Name -->
       <div>
         <label for="name" class="block text-sm font-semibold text-gray-700">Full Name</label>
         <input
@@ -12,14 +11,13 @@
           formControlName="name"
           autocomplete="off"
           class="mt-1 w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none"
-          placeholder="John Doe"
+          placeholder="Enter Your Full Name"
         />
         @if (signupForm.get('name')?.invalid && signupForm.get('name')?.touched) {
           <div class="mt-1 text-sm text-red-600">Please enter your name</div>
         }
       </div>
 
-      <!-- Email -->
       <div>
         <label for="email" class="block text-sm font-semibold text-gray-700">Email</label>
         <input
@@ -28,14 +26,13 @@
           formControlName="email"
           autocomplete="off"
           class="mt-1 w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none"
-          placeholder="your@email.com"
+          placeholder="Enter Your Email"
         />
         @if (signupForm.get('email')?.invalid && signupForm.get('email')?.touched) {
           <div class="mt-1 text-sm text-red-600">Please enter a valid email address</div>
         }
       </div>
 
-      <!-- Password -->
       <div>
         <label for="password" class="block text-sm font-semibold text-gray-700">Password</label>
         <input
@@ -44,14 +41,13 @@
           formControlName="password"
           autocomplete="off"
           class="mt-1 w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none"
-          placeholder="********"
+          placeholder="Enter Your Password"
         />
         @if (signupForm.get('password')?.invalid && signupForm.get('password')?.touched) {
           <div class="mt-1 text-sm text-red-600">Password must be at least 6 characters</div>
         }
       </div>
 
-      <!-- Confirm Password -->
       <div>
         <label for="confirmPassword" class="block text-sm font-semibold text-gray-700">Confirm Password</label>
         <input
@@ -60,21 +56,19 @@
           formControlName="confirmPassword"
           autocomplete="off"
           class="mt-1 w-full rounded-lg border border-gray-300 p-3 text-sm shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none"
-          placeholder="********"
+          placeholder="Enter Your Password Again"
         />
         @if (signupForm.errors?.['passwordMismatch'] && signupForm.get('confirmPassword')?.touched) {
           <div class="mt-1 text-sm text-red-600">Passwords do not match</div>
         }
       </div>
 
-      <!-- Error Message -->
       @if (errorMessage) {
         <div class="rounded-md bg-red-100 px-4 py-2 text-sm text-red-700 shadow-sm">
           {{ errorMessage }}
         </div>
       }
 
-      <!-- Submit Button -->
       <button
         type="submit"
         [disabled]="signupForm.invalid || isLoading"
@@ -87,7 +81,6 @@
         }
       </button>
 
-      <!-- Login Link -->
       <div class="text-center text-sm text-gray-600">
         Already have an account?
         <a routerLink="/login" class="font-medium text-purple-600 hover:underline">Sign in</a>
