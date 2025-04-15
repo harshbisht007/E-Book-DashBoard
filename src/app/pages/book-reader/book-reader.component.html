@@ -1,0 +1,99 @@
+<p-toast />
+
+<div class="p-6 max-w-3xl mx-auto">
+  <h2 class="text-3xl font-bold text-center text-gray-800 mb-2">{{ book?.title }}</h2>
+
+  <p class="text-center text-sm text-gray-500 mb-6">
+    {{ isPreview ? 'You are reading a preview (20% of the book).' : 'Full book unlocked 🎉' }}
+  </p>
+
+  <div class="flex items-center justify-between mb-4 gap-3">
+    <button
+      class="flex items-center gap-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:opacity-50"
+      (click)="prevPage()"
+      [disabled]="pageIndex === 0 || !book"
+    >
+      ⬅ <span>Previous</span>
+    </button>
+
+    <input
+      type="range"
+      min="0"
+      [max]="book?.content?.length - 1"
+      [(ngModel)]="pageIndex"
+      (input)="onSliderChange($event)"
+      class="w-full accent-indigo-600"
+    />
+
+    <button
+      class="flex items-center gap-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:opacity-50"
+      (click)="nextPage()"
+      [disabled]="!book || pageIndex === (book.content?.length || 0) - 1 || isLocked"
+    >
+      <span>Next</span> ➡
+    </button>
+  </div>
+
+  <!-- Book Content -->
+  <div class="bg-white text-gray-700 p-6 rounded-lg shadow-md text-lg leading-relaxed min-h-[250px]">
+    <ng-container *ngIf="book; else loading">
+      <p *ngIf="!isLocked; else lockedContent">
+        {{ book?.content?.[pageIndex] }}
+      </p>
+    </ng-container>
+
+    <!-- Locked Message -->
+    <ng-template #lockedContent>
+      <div class="text-center text-gray-700">
+        <p class="mb-4 text-lg">🔒 This page is part of the premium content.</p>
+        <button
+          class="px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-all"
+          (click)="showBuyModal = true"
+          *ngIf="isPreview"
+        >
+          📘 Buy this book to unlock all {{ book?.content?.length }} pages
+        </button>
+      </div>
+    </ng-template>
+
+    <!-- Loading -->
+    <ng-template #loading>
+      <p>Loading book...</p>
+    </ng-template>
+  </div>
+
+  <!-- Page Number -->
+  <div class="mt-4 text-center text-sm text-gray-500">
+    <span *ngIf="book">Page {{ pageIndex + 1 }} / {{ book.content?.length }}</span>
+  </div>
+
+  <p-dialog
+    header="Unlock Full Access"
+    [(visible)]="showBuyModal"
+    [modal]="true"
+    [closable]="false"
+    [dismissableMask]="true"
+    [style]="{ width: '350px' }"
+  >
+    <div class="text-center">
+      <p class="text-sm text-gray-500 mb-4">
+        Get the full version of <strong>{{ book?.title }}</strong> and enjoy the complete experience.
+      </p>
+      <div class="flex justify-center gap-3 mt-4">
+        <button
+          class="px-5 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition"
+          (click)="buyBook()"
+        >
+          ✅ Buy Now
+        </button>
+        <button
+          class="px-5 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition"
+          (click)="showBuyModal = false"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </p-dialog>
+
+</div>

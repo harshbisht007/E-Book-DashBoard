@@ -1,0 +1,83 @@
+<div class="flex min-h-screen items-center justify-center bg-gradient-to-tr from-blue-100 to-purple-200 px-4">
+  <div class="w-full max-w-md rounded-xl bg-white p-10 shadow-2xl">
+    <h1 class="mb-8 text-center text-3xl font-extrabold text-gray-800">Login to E-Book Dashboard</h1>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Email -->
+      <div>
+        <label for="email" class="mb-1 block text-sm font-semibold text-gray-700">Email</label>
+        <div class="relative text-gray-700">
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            autocomplete="off"
+            class="w-full rounded-lg border border-gray-300 p-3 pl-10 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            placeholder="you@example.com"
+          />
+          <span class="absolute left-3 top-3 text-gray-400">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M16 12H8m0 0v4m0-4V8m0 0l4-4m0 4L8 8" />
+            </svg>
+          </span>
+        </div>
+
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+          <div class="mt-1 text-xs text-red-600">Please enter a valid email address</div>
+        }
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label for="password" class="mb-1 block text-sm font-semibold text-gray-700">Password</label>
+        <div class="relative text-gray-700">
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            autocomplete="off"
+            class="w-full rounded-lg border border-gray-300 p-3 pl-10 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            placeholder="********"
+          />
+          <span class="absolute left-3 top-3 text-gray-400">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 11c0-.35.07-.68.2-.98a2.5 2.5 0 014.3-.74m-4.5 6.22v.01M12 15a3 3 0 110-6 3 3 0 010 6z" />
+            </svg>
+          </span>
+        </div>
+
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <div class="mt-1 text-xs text-red-600">Password is required</div>
+        }
+      </div>
+
+      <!-- Error Message -->
+      @if (errorMessage) {
+        <div class="rounded-md bg-red-100 px-4 py-2 text-sm text-red-700 shadow">
+          {{ errorMessage }}
+        </div>
+      }
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid || isLoading"
+        class="w-full rounded-lg bg-blue-600 py-3 text-sm font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 disabled:opacity-50"
+      >
+        @if (isLoading) {
+          <span>Loading...</span>
+        } @else {
+          <span>Sign In</span>
+        }
+      </button>
+
+      <!-- Signup Link -->
+      <div class="text-center text-sm text-gray-600">
+        Don't have an account?
+        <a routerLink="/signup" class="font-medium text-blue-600 hover:underline">Sign up</a>
+      </div>
+    </form>
+  </div>
+</div>
